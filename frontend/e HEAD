@@ -1,0 +1,181 @@
+[33mcommit bdf572c22be6885dcf4d3b29df20414feefb973c[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: mozxmmi <mdmozammil605@gmail.com>
+Date:   Sat Apr 13 14:00:19 2024 +0530
+
+    added like , twitt create ,other...
+
+[1mdiff --git a/.env b/.env[m
+[1mnew file mode 100644[m
+[1mindex 0000000..8456584[m
+[1m--- /dev/null[m
+[1m+++ b/.env[m
+[36m@@ -0,0 +1 @@[m
+[32m+[m[32mVITE_USER_API_REQ=http://localhost:8000/api/v1[m
+\ No newline at end of file[m
+[1mdiff --git a/.eslintrc.cjs b/.eslintrc.cjs[m
+[1mnew file mode 100644[m
+[1mindex 0000000..3e212e1[m
+[1m--- /dev/null[m
+[1m+++ b/.eslintrc.cjs[m
+[36m@@ -0,0 +1,21 @@[m
+[32m+[m[32mmodule.exports = {[m
+[32m+[m[32m  root: true,[m
+[32m+[m[32m  env: { browser: true, es2020: true },[m
+[32m+[m[32m  extends: [[m
+[32m+[m[32m    'eslint:recommended',[m
+[32m+[m[32m    'plugin:react/recommended',[m
+[32m+[m[32m    'plugin:react/jsx-runtime',[m
+[32m+[m[32m    'plugin:react-hooks/recommended',[m
+[32m+[m[32m  ],[m
+[32m+[m[32m  ignorePatterns: ['dist', '.eslintrc.cjs'],[m
+[32m+[m[32m  parserOptions: { ecmaVersion: 'latest', sourceType: 'module' },[m
+[32m+[m[32m  settings: { react: { version: '18.2' } },[m
+[32m+[m[32m  plugins: ['react-refresh'],[m
+[32m+[m[32m  rules: {[m
+[32m+[m[32m    'react/jsx-no-target-blank': 'off',[m
+[32m+[m[32m    'react-refresh/only-export-components': [[m
+[32m+[m[32m      'warn',[m
+[32m+[m[32m      { allowConstantExport: true },[m
+[32m+[m[32m    ],[m
+[32m+[m[32m  },[m
+[32m+[m[32m}[m
+[1mdiff --git a/.gitignore b/.gitignore[m
+[1mnew file mode 100644[m
+[1mindex 0000000..a547bf3[m
+[1m--- /dev/null[m
+[1m+++ b/.gitignore[m
+[36m@@ -0,0 +1,24 @@[m
+[32m+[m[32m# Logs[m
+[32m+[m[32mlogs[m
+[32m+[m[32m*.log[m
+[32m+[m[32mnpm-debug.log*[m
+[32m+[m[32myarn-debug.log*[m
+[32m+[m[32myarn-error.log*[m
+[32m+[m[32mpnpm-debug.log*[m
+[32m+[m[32mlerna-debug.log*[m
+[32m+[m
+[32m+[m[32mnode_modules[m
+[32m+[m[32mdist[m
+[32m+[m[32mdist-ssr[m
+[32m+[m[32m*.local[m
+[32m+[m
+[32m+[m[32m# Editor directories and files[m
+[32m+[m[32m.vscode/*[m
+[32m+[m[32m!.vscode/extensions.json[m
+[32m+[m[32m.idea[m
+[32m+[m[32m.DS_Store[m
+[32m+[m[32m*.suo[m
+[32m+[m[32m*.ntvs*[m
+[32m+[m[32m*.njsproj[m
+[32m+[m[32m*.sln[m
+[32m+[m[32m*.sw?[m
+[1mdiff --git a/README.md b/README.md[m
+[1mnew file mode 100644[m
+[1mindex 0000000..f768e33[m
+[1m--- /dev/null[m
+[1m+++ b/README.md[m
+[36m@@ -0,0 +1,8 @@[m
+[32m+[m[32m# React + Vite[m
+[32m+[m
+[32m+[m[32mThis template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.[m
+[32m+[m
+[32m+[m[32mCurrently, two official plugins are available:[m
+[32m+[m
+[32m+[m[32m- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh[m
+[32m+[m[32m- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh[m
+[1mdiff --git a/components/homepage/Bottom.jsx b/components/homepage/Bottom.jsx[m
+[1mnew file mode 100644[m
+[1mindex 0000000..2887cc2[m
+[1m--- /dev/null[m
+[1m+++ b/components/homepage/Bottom.jsx[m
+[36m@@ -0,0 +1,27 @@[m
+[32m+[m[32mimport React from "react";[m
+[32m+[m[32mimport { IoMdHome } from "react-icons/io";[m
+[32m+[m[32mimport { FaSearch } from "react-icons/fa";[m
+[32m+[m[32mimport { IoNotificationsSharp } from "react-icons/io5";[m
+[32m+[m[32mimport { CgProfile } from "react-icons/cg";[m
+[32m+[m[32mimport { TiMessages } from "react-icons/ti";[m
+[32m+[m[32mimport { CiCircleMore } from "react-icons/ci";[m
+[32m+[m[32mimport { RiLogoutCircleRLine } from "react-icons/ri";[m
+[32m+[m
+[32m+[m[32mimport { Link } from "react-router-dom";[m
+[32m+[m[32mconst Bottom = () => {[m
+[32m+[m[32m  return ([m
+[32m+[m[32m    <div className=" fixed left-0 bottom-0 w-full  md:hidden backdrop-blur-md bg-[#0202021b] ">[m
+[32m+[m[32m      <div className="px-6 py-2 flex justify-between text-4xl cursor-pointer ">[m
+[32m+[m[32m        <Link to="/">[m
+[32m+[m[32m          <IoMdHome />[m
+[32m+[m[32m        </Link>[m
+[32m+[m
+[32m+[m[32m        <FaSearch />[m
+[32m+[m[32m        <IoNotificationsSharp />[m
+[32m+[m[32m        <TiMessages />[m
+[32m+[m[32m      </div>[m
+[32m+[m[32m    </div>[m
+[32m+[m[32m  );[m
+[32m+[m[32m};[m
+[32m+[m
+[32m+[m[32mexport default Bottom;[m
+[1mdiff --git a/components/homepage/Left.jsx b/components/homepage/Left.jsx[m
+[1mnew file mode 100644[m
+[1mindex 0000000..431b26f[m
+[1m--- /dev/null[m
+[1m+++ b/components/homepage/Left.jsx[m
+[36m@@ -0,0 +1,96 @@[m
+[32m+[m[32mimport React, { useEffect } from "react";[m
+[32m+[m[32mimport { IoMdHome } from "react-icons/io";[m
+[32m+[m[32mimport { FaSearch } from "react-icons/fa";[m
+[32m+[m[32mimport { IoNotificationsSharp } from "react-icons/io5";[m
+[32m+[m[32mimport { CgProfile } from "react-icons/cg";[m
+[32m+[m[32mimport { TiMessages } from "react-icons/ti";[m
+[32m+[m[32mimport { CiCircleMore } from "react-icons/ci";[m
+[32m+[m[32mimport { Link } from "react-router-dom";[m
+[32m+[m[32mimport { RiLogoutCircleRLine } from "react-icons/ri";[m
+[32m+[m[32mimport { useDispatch, useSelector } from "react-redux";[m
+[32m+[m[32mimport { hiddenShow } from "../../redux/slice/searchboxHiddenShow/searchbox";[m
+[32m+[m[32mimport { BsTwitterX } from "react-icons/bs";[m
+[32m+[m
+[32m+[m
+[32m+[m[32mconst Left = () => {[m
+[32m+[m[32m  const {user} =useSelector(state=>state.user)[m
+[32m+[m[32m  console.log(user)[m
+[32m+[m[32m  const dispatch = useDispatch();[m
+[32m+[m[32m  const handleSeach = () => {[m
+[32m+[m[32m    dispatch(hiddenShow());[m
+[32m+[m[32m  };[m
+[32m+[m[32m  const logoutfun = () => {[m
+[32m+[m[32m    window.location.href = "http://localhost:8000/logout";[m
+[32m+[m[32m  };[m
+[32m+[m[32m  return ([m
+[32m+[m[32m    <div className="pt-1  w-[20%] hidden md:block lg:block  ">[m
+[32m+[m[32m      <div className="fixed  ml-8 lg:ml-0">[m
+[32m+[m[32m        <Link to={"/"} className="logo pt-3 px-3  ">[m
+[32m+[m[32m          <BsTwitterX className="text-3xl hover:cursor-pointer" />[m
+[32m+[m[32m        </Link>[m
+[32m+[m[32m        <div className="text-2xl font-bold pt-2 ">[m
+[32m+[m[32m          <div className="flex items-center gap-4 hover:bg-zinc-300 hover:cursor-pointer rounded-full py-2 px-3">[m
+[32m+[m[32m            <IoMdHome className="text-3xl " />[m
+[32m+[m[32m            <Link to={"/"} className="xl:block md:hidden">[m
+[32m+[m[32m              Home[m
+[32m+[m[32m            </Link>[m
+[32m+[m[32m          </div>[m
+[32m+[m[32m        </div>[m
+[32m+[m[32m        <div className="text-2xl font-bold pt-2">[m
+[32m+[m[32m          <Link[m
+[32m+[m[32m            onClick={handleSeach}[m
+[32m+[m[32m            to={"/search"}[m
+[32m+[m[32m            className="flex items-center gap-4 hover:bg-zinc-300 hover:cursor-pointer rounded-full py-2 px-3"[m
+[32m+[m[32m          >[m
+[32m+[m[32m            <FaSearch className="text-3xl" />[m
+[32m+[m[32m            <h1 className="xl:block md:hidden">Search</h1>[m
+[32m+[m[32m          </Link>[m
+[32m+[m[32m        </div>[m
+[32m+[m[32m        <div className="text-2xl font-bold pt-2">[m
+[32m+[m[32m          <div className="flex items-center gap-4 hover:bg-zinc-300 hover:cursor-pointer rounded-full py-2 px-3">[m
+[32m+[m[32m            <IoNotificationsSharp className="text-3xl" />[m
+[32m+[m[32m            <h1 className="xl:block md:hidden">Notification</h1>[m
+[32m+[m[32m          </div>[m
+[32m+[m[32m        </div>[m
+[32m+[m[32m        <div className="text-2xl font-bold pt-2">[m
+[32m+[m[32m          <div className="flex items-center gap-4 hover:bg-zinc-300 hover:cursor-pointer rounded-full py-2 px-3">[m
+[32m+[m[32m            <TiMessages className="te
