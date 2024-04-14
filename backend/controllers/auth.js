@@ -8,7 +8,7 @@ import { jwtTokenMaker } from "../utils/jwtToken.js";
 import { Tweet } from "../models/tweetmodel.js";
 const ragiser = asyncHandler(async (req, res) => {
   const { name, username, email, password } = req.body;
-  
+
   if (
     !(
       name &&
@@ -98,8 +98,8 @@ const bookmark = asyncHandler(async (req, res) => {
 });
 
 const userProfiel = asyncHandler(async (req, res) => {
-  const user = req.user;
-  const userinfo = await User.findById(user).select("-password");
+  const { id } = req.params;
+  const userinfo = await User.findById(id).select("-password");
   return res.status(200).json(new ApiRasponce(200, "user profile", userinfo));
 });
 
@@ -122,7 +122,7 @@ const getallUser = asyncHandler(async (req, res) => {
       return res.status(404).json(new ApiRasponce(404, "No users found"));
     }
 
-    console.log(allUsersInfo);
+    
 
     return res
       .status(200)

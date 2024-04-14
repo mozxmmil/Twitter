@@ -7,7 +7,7 @@ const Tweetschema = new mongoose.Schema(
     },
     likes: {
       type: Array,
-      default: 0,
+      default: [],
     },
 
     userid: [
@@ -16,6 +16,10 @@ const Tweetschema = new mongoose.Schema(
         ref: "User",
       },
     ],
+    userDetail:{
+      type:Array,
+      default:[]
+    },
 
     createdAt: { type: Date, default: Date.now },
   },

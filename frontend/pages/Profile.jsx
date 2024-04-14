@@ -1,29 +1,41 @@
 import React from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { CiCalendar } from "react-icons/ci";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import useUserrGetProfile from "../hook/useUserGetProfile";
 import { useSelector } from "react-redux";
 const Profile = () => {
-  const {profile} = useSelector(state=>state.user)
-  console.log(profile)
+  const { id } = useParams();
+  const { profile } = useSelector((state) => state.user);
+  console.log(profile);
   const dateString = profile?.createdAt;
-const date = new Date(dateString);
+  const date = new Date(dateString);
 
-// Extract year and month from the date
-const year = date.getFullYear();
-const month = date.getMonth() + 1; // Month is zero-based, so we add 1
+  // Extract year and month from the date
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1; // Month is zero-based, so we add 1
 
-// Convert month number to month name
-const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-const monthName = monthNames[month - 1]; // Adjusting index
+  // Convert month number to month name
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  const monthName = monthNames[month - 1]; // Adjusting index
 
-// Construct the desired string
-const joinedString = `Joined ${monthName} ${year}`;
+  // Construct the desired string
+  const joinedString = `Joined ${monthName} ${year}`; // Output: Joined April 2024
 
-; // Output: Joined April 2024
-
-  useUserrGetProfile()
+  useUserrGetProfile(id);
   return (
     <div className="w-[60%] border-l-2 border-gray-300 border-r-2 ">
       <div className="flex  items-center pt-1  ">
@@ -79,7 +91,9 @@ const joinedString = `Joined ${monthName} ${year}`;
         <div className="flex gap-2 items-center pt-1">
           <div className="flex gap-1 ">
             <div>
-              <h1 className="font-bold ">{profile?.follower==null?0 : profile.follower}</h1>
+              <h1 className="font-bold ">
+                {profile?.followers?.length === 0 ? 0 : profile?.followers}
+              </h1>
             </div>
             <div>
               <h1 className="capitalize">Followers</h1>
@@ -87,7 +101,9 @@ const joinedString = `Joined ${monthName} ${year}`;
           </div>
           <div className="flex gap-1 ">
             <div>
-              <h1 className="font-bold ">{profile?.following==null?0 : profile.following}</h1>
+              <h1 className="font-bold ">
+                {profile?.following?.length === 0 ? 0 : profile?.following}
+              </h1>
             </div>
             <div>
               <h1 className="capitalize">following</h1>

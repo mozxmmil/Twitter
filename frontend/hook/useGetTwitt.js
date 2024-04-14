@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { setTwitt } from "../redux/slice/twitt/twitt";
 import { useSelector } from "react-redux";
 
-export const useGetTwitt = (id) => {
+export const useGetTwitt = () => {
   const { refresh } = useSelector((state) => state.twitt);
 
   const dispatch = useDispatch();
@@ -12,11 +12,12 @@ export const useGetTwitt = (id) => {
     useEffect(() => {
       const callingapi = async () => {
         const { data } = await axios.get(
-          `${import.meta.env.VITE_USER_API_REQ}/user/getalltwitt/${id}`,
+          `${import.meta.env.VITE_USER_API_REQ}/user/getalltwitt`,
           {
             withCredentials: true,
           }
         );
+        
         if (data.succsess) {
           dispatch(setTwitt(data.data));
         }

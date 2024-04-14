@@ -1,14 +1,22 @@
 import { Tweet } from "../models/tweetmodel.js";
+import { User } from "../models/usermodel.js";
 import { ApiRasponce } from "../utils/apiResponce.js";
 import { ApiError } from "../utils/apierror.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 
 const Twitt = asyncHandler(async (req, res) => {
-  const { description, userid } = req.body;
-  if (!description || !userid) throw new ApiError(400, "somethign");
+  const { description } = req.body;
+  const userid = req.user;
+  console.log(description);
+  console.log(userid);
+
+  if (!description || !userid) throw new ApiError(400, "please field");
+  const userDetail = await User.findById(userid);
+  if (!userDetail) throw new ApiError(400, "user not found");
   const newTweet = await Tweet.create({
     description,
     userid,
+    userDetail,
   });
   return res
     .status(200)

@@ -9,9 +9,10 @@ import { Link } from "react-router-dom";
 import { RiLogoutCircleRLine } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
 import { hiddenShow } from "../../redux/slice/searchboxHiddenShow/searchbox";
-import { BsTwitterX } from "react-icons/bs";
+import { BsTwitterX, BsXCircleFill } from "react-icons/bs";
 
 const Left = () => {
+  const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const handleSeach = () => {
     dispatch(hiddenShow());
@@ -58,7 +59,7 @@ const Left = () => {
         <div className="text-2xl font-bold pt-2">
           <div className="flex items-center gap-4 hover:bg-zinc-300 hover:cursor-pointer rounded-full py-2 px-3">
             <CgProfile className="text-3xl" />
-            <Link to={"/profile"} className="xl:block md:hidden">
+            <Link to={`/profile/${user?._id}`} className="xl:block md:hidden">
               Profile
             </Link>
           </div>

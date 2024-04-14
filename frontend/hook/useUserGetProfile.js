@@ -3,13 +3,13 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setprofile } from "../redux/slice/userData/userData";
 
-const useUserrGetProfile = () => {
+const useUserrGetProfile = (id) => {
   const dispatch = useDispatch();
   try {
     useEffect(() => {
       const callingapi = async () => {
         const { data } = await axios.get(
-          `${import.meta.env.VITE_USER_API_REQ}/user/profile`,
+          `${import.meta.env.VITE_USER_API_REQ}/user/profile/${id}`,
           {
             withCredentials: true,
           }
@@ -17,7 +17,7 @@ const useUserrGetProfile = () => {
         dispatch(setprofile(data.data));
       };
       callingapi();
-    }, []);
+    }, [id]);
   } catch (error) {
     console.log(error);
   }

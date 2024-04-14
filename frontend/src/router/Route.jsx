@@ -12,7 +12,7 @@ const Router = () => {
       element: <Homepage />,
       children: [
         {
-          path: "/profile",
+          path: "/profile/:id",
           element: <Profile />,
         },
         {

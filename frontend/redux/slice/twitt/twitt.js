@@ -4,6 +4,7 @@ export const twittSlice = createSlice({
   initialState: {
     twitt: null,
     refresh: false,
+    
   },
   reducers: {
     setTwitt: (state, action) => {

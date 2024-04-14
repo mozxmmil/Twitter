@@ -21,7 +21,7 @@ router.route("/twitt").post(Middlerware, Twitt);
 router.route("/twitt/delete/:id").delete(Middlerware, twittDelete);
 router.route("/twitt/like/:id").post(Middlerware, likeTwitt);
 router.route("/twitt/bookmark/:id").put(Middlerware, bookmark);
-router.route("/user/profile").get(Middlerware, userProfiel);
+router.route("/user/profile/:id").get(Middlerware, userProfiel);
 router.route("/user/all").get(Middlerware, getallUser);
 router.route("/user/follow/:id").post(Middlerware, follow);
 router.route("/user/unfollow/:id").post(Middlerware, unfollow);

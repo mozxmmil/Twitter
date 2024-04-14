@@ -11,8 +11,9 @@ const Middlerware = asyncHandler(async (req, res, next) => {
   const tokenverification = jwtchecker(token, process.env.JWTTOKEN);
 
   if (!tokenverification) throw new ApiError(401, "token is invalid");
-
+ 
   req.user = tokenverification.id;
+  
   next();
 });
 

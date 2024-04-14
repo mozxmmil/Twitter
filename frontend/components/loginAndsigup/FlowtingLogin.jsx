@@ -18,7 +18,7 @@ const FlowtingLogin = ({ loginflowting, setLoginflowting }) => {
     e.preventDefault();
     if (loginsecctionshow) {
       try {
-        const res = await axios.post(
+        const {data} = await axios.post(
           `${import.meta.env.VITE_USER_API_REQ}/login`,
           {
             email,
@@ -31,10 +31,12 @@ const FlowtingLogin = ({ loginflowting, setLoginflowting }) => {
             withCredentials: true,
           }
         );
-        if (res.data.succsess) {
-          toast.success(res.data.message);
+        console.log(data.succsess)
+        if (data?.succsess) {
+          toast.success(data.message);
           navigate("/");
-          userDispatch(user(res?.data?.data.token));
+          
+          userDispatch(user(data.data.user));
         }
       } catch (error) {
         console.error(error);

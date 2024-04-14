@@ -10,7 +10,7 @@ import { RiLogoutCircleRLine } from "react-icons/ri";
 import { Link } from "react-router-dom";
 const Bottom = () => {
   return (
-    <div className="absolute left-0 bottom-0 w-full block md:hidden backdrop-blur-md bg-[#0202021b] ">
+    <div className="fixed left-0 bottom-0 w-full block md:hidden backdrop-blur-md bg-[#0202021b] ">
       <div className="px-6 py-2 flex justify-between text-4xl cursor-pointer ">
         <Link to="/">
           <IoMdHome />
