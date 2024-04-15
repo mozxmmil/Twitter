@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 
 const Middle = () => {
   const { twitt } = useSelector((state) => state.twitt);
+  
 
   useGetTwitt();
   return (

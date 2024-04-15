@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { setRefresh } from "../redux/slice/twitt/twitt";
 import toast from "react-hot-toast";
 export const useDeleteTwitt = () => {
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const deleteTwitt = async (id) => {
     const { data } = await axios.delete(
       `${import.meta.env.VITE_USER_API_REQ}/twitt/delete/${id}`,
@@ -12,14 +12,13 @@ export const useDeleteTwitt = () => {
         withCredentials: true,
       }
     );
-    
-    if(data.succsess){
-        dispatch(setRefresh());
-        toast.success(data.message);
-    }else{
-        toast.error(data.message);
+
+    if (data.succsess) {
+      dispatch(setRefresh());
+      toast.success(data.message);
+    } else {
+      toast.error(data.message);
     }
   };
   return deleteTwitt;
 };
-

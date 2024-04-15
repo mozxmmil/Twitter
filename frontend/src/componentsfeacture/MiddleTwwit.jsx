@@ -7,18 +7,26 @@ import React, { useState } from "react";
 import { useTwitterTimeUpdate } from "../../hook/useTwitterTimeUpdate";
 import { MdDelete } from "react-icons/md";
 import { useDeleteTwitt } from "../../hook/useDeleteTwitt";
+import { useSelector } from "react-redux";
 
-
-const MiddleTwwit = ({ likes, description, createdAt, userDetail, _id }) => {
+const MiddleTwwit = ({
+  likes,
+  description,
+  createdAt,
+  userDetail,
+  _id,
+  userid,
+}) => {
+  const { user } = useSelector((state) => state.user);
   const TwittDelete = useDeleteTwitt();
   const time = useTwitterTimeUpdate(createdAt);
   const hadleclick = useLilke();
   const handleLike = () => {
     hadleclick(_id);
   };
- const handleDelete = ()=>{
-   TwittDelete(_id)
- }
+  const handleDelete = () => {
+    TwittDelete(_id);
+  };
   return (
     <div>
       <div className="px-3 py-4 border-b-2 border-gray-300">
@@ -58,9 +66,11 @@ const MiddleTwwit = ({ likes, description, createdAt, userDetail, _id }) => {
                 className={`flex items-center  hover:text-red-500 hover:cursor-pointer`}
               >
                 <div className=" px-2">
-                  <FaHeart className={`text-xl font-semibold ${
-                  likes.length === 0 ? "text-black" : "text-pink-500"
-                } `} />
+                  <FaHeart
+                    className={`text-xl font-semibold ${
+                      likes.length === 0 ? "text-black" : "text-pink-500"
+                    } `}
+                  />
                 </div>
                 <div>
                   <span>{likes.length}</span>
@@ -74,12 +84,16 @@ const MiddleTwwit = ({ likes, description, createdAt, userDetail, _id }) => {
                   <span>2</span>
                 </div>
               </div>
-              <div onClick={handleDelete} className="flex items-center  hover:text-red-700 hover:cursor-pointer ">
-                <div className=" px-2">
-                  <MdDelete className="text-xl font-semibold" />
+              {user?._id === userid[0] && (
+                <div
+                  onClick={handleDelete}
+                  className="flex items-center hover:text-red-700 hover:cursor-pointer"
+                >
+                  <div className="px-2">
+                    <MdDelete className="text-xl font-semibold" />
+                  </div>
                 </div>
-                
-              </div>
+              )}
             </div>
           </div>
         </div>

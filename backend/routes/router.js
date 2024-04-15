@@ -2,6 +2,7 @@ import exprss from "express";
 import {
   bookmark,
   follow,
+  getOnlyFollowerTwitt,
   getUsertwittandUserWhoifollow,
   getallUser,
   login,
@@ -26,6 +27,7 @@ router.route("/user/all").get(Middlerware, getallUser);
 router.route("/user/follow/:id").post(Middlerware, follow);
 router.route("/user/unfollow/:id").post(Middlerware, unfollow);
 router.route("/user/getalltwitt").get(Middlerware, getUsertwittandUserWhoifollow);
+router.route("/user/getOnlyFollowerTwitt").get(Middlerware, getOnlyFollowerTwitt);
 
 
 export default router;
