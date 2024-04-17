@@ -11,7 +11,7 @@ import { useGetOtherUserProfile } from "../hook/useGetOtherUserProfile";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-export const Homepage = () => {
+ const Homepage = () => {
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.user);
   useEffect(() => {
@@ -30,3 +30,5 @@ export const Homepage = () => {
     </div>
   );
 };
+
+export default Homepage

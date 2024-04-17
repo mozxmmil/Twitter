@@ -1,34 +1,55 @@
-import React from "react";
+import React, { lazy,Suspense } from "react";
 import { createBrowserRouter, Route, RouterProvider } from "react-router-dom";
-import { Homepage } from "../../pages/Homepage";
-import Profile from "../../pages/Profile";
-import Login from "../../pages/Login";
-import Middle from "../../components/homepage/Middle";
-import SearchPage from "../../pages/SearchPage";
+
+const Homepage = lazy(() => import("../../pages/Homepage"));
+const Profile = lazy(() => import("../../pages/Profile"));
+const Login = lazy(() => import("../../pages/Login"));
+const SearchPage = lazy(() => import("../../pages/SearchPage"));
+const Middle = lazy(() => import("../../components/homepage/Middle"));
 const Router = () => {
   const BrowserRouter = createBrowserRouter([
     {
       path: "/",
-      element: <Homepage />,
+      element: (
+        <Suspense fallback={<div>Loading...</div>}>
+          <Homepage />
+        </Suspense>
+      ),
       children: [
         {
           path: "/profile/:id",
-          element: <Profile />,
+          element: (
+            <Suspense fallback={<div>Loading...</div>}>
+              <Profile />
+            </Suspense>
+          )
         },
         {
           path: "/",
-          element: <Middle />,
+          element: (
+            <Suspense fallback={<div>Loading...</div>}>
+              <Middle />
+            </Suspense>
+          ),
         },
         {
-          path:"/search",
-          element:<SearchPage/>
-        }
-
-    ],
+          path: "/search",
+          element: (
+            <Suspense fallback={<div>Loading...</div>}>
+              <SearchPage />
+            </Suspense>
+          ),
+          
+        },
+      ],
     },
     {
       path: "/login",
-      element: <Login />,
+      element: (
+        <Suspense fallback={<div>Loading...</div>}>
+          <Login />
+        </Suspense>
+      ),
     },
   ]);
   return (
