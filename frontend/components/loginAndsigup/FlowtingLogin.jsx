@@ -31,15 +31,18 @@ const FlowtingLogin = ({ loginflowting, setLoginflowting }) => {
             withCredentials: true,
           }
         );
-        console.log(data.succsess)
+        console.log(data)
         if (data?.succsess) {
           toast.success(data.message);
           navigate("/");
           
           userDispatch(user(data.data.user));
         }
+        else {
+          toast.error("Something Went Wrong");
+        }
       } catch (error) {
-        console.error(error);
+        toast.error("something went wrong")
       }
     } else {
       try {
@@ -59,7 +62,10 @@ const FlowtingLogin = ({ loginflowting, setLoginflowting }) => {
         const { data } = res.data;
         console.log(data);
         if (res.data) {
-          toast.success("lohgin");
+          toast.success("please login");
+        }
+        else {
+          toast("Something Went Wrong");
         }
       } catch (error) {
         console.log(error.response.data);

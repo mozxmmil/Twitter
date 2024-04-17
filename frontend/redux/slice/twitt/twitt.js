@@ -4,7 +4,7 @@ export const twittSlice = createSlice({
   initialState: {
     twitt: null,
     refresh: false,
-    
+    isActive: true,
   },
   reducers: {
     setTwitt: (state, action) => {
@@ -13,8 +13,14 @@ export const twittSlice = createSlice({
     setRefresh: (state) => {
       state.refresh = !state.refresh;
     },
+    setIsActive: (state, action) => {
+      state.isActive = action.payload;
+    },
+    setTwittNull: (state) => {
+      state.twitt = null;
+    },
   },
 });
 
-export const { setTwitt,setRefresh } = twittSlice.actions;
+export const { setTwitt, setRefresh, setIsActive,setTwittNull } = twittSlice.actions;
 export default twittSlice.reducer;

@@ -1,3 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+    overflow: hidden; /* Hide the main scroll bar */
+  }
+  
+  .main-content {
+    overflow-y: auto; /* Enable vertical scrolling */
+    height: 100vh; /* Set a height for the container */
+  }

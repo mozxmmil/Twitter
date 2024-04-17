@@ -41,12 +41,13 @@ const MiddleTwwit = ({
           <div className="w-full">
             <div className="flex  items-center gap-3">
               <h1 className="text-[16px] font-bold capitalize leading-4 font ">
-                {userDetail && userDetail.length > 0 && userDetail[0].name}
+                {userDetail && userDetail.length > 0 && (
+                  <div>{userDetail[0]?.name}</div>
+                )}
+                
               </h1>
               <h1 className=" font-semibold text-gray-500  ">
-                {`${
-                  userDetail && userDetail.length > 0 && userDetail[0].username
-                }  .${time}`}
+                {`${userDetail[0]?.username}. ${time}`}
               </h1>
             </div>
             <div className="twit py-2 w-full ">
@@ -68,12 +69,12 @@ const MiddleTwwit = ({
                 <div className=" px-2">
                   <FaHeart
                     className={`text-xl font-semibold ${
-                      likes.length === 0 ? "text-black" : "text-pink-500"
+                      likes?.length === 0 ? "text-black" : "text-pink-500"
                     } `}
                   />
                 </div>
                 <div>
-                  <span>{likes.length}</span>
+                  <span>{likes?.length}</span>
                 </div>
               </div>
               <div className="flex items-center  hover:text-blue-500 hover:cursor-pointer ">

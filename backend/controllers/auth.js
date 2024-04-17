@@ -43,7 +43,10 @@ const ragiser = asyncHandler(async (req, res) => {
 const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
-  if (!email) throw new ApiError(409, "Please provide all fields");
+  if (!email || !password) {
+    res.status(409).json(new ApiRasponce(409, "Please provide all fields"));
+    throw new ApiError(409, "Please provide all fields");
+  }
 
   const user = await User.findOne({ email });
 
@@ -71,7 +74,11 @@ const login = asyncHandler(async (req, res) => {
 
 const logout = asyncHandler(async (req, res) => {
   res
-    .clearCookie("token", { httpOnly: true, secure: true })
+    .clearCookie("token", {
+      httpOnly: true,
+      secure: true,
+      expires: new Date(0),
+    })
     .json(new ApiRasponce(200, "User logged out successfully"));
 });
 
@@ -121,8 +128,6 @@ const getallUser = asyncHandler(async (req, res) => {
     if (!allUsersInfo || allUsersInfo.length === 0) {
       return res.status(404).json(new ApiRasponce(404, "No users found"));
     }
-
-    
 
     return res
       .status(200)
@@ -185,10 +190,10 @@ const unfollow = asyncHandler(async (req, res) => {
 
 const getUsertwittandUserWhoifollow = asyncHandler(async (req, res) => {
   const userId = req.user;
-  const userDetail = await Tweet.find({ userid: userId }); 
+  const userDetail = await Tweet.find({ userid: userId });
   // logeedin user twiit
   const whoifollowId = await User.findById(userId).select("-password");
-   // logeedin user who ifollow
+  // logeedin user who ifollow
   const userWhoIFollowTweet = await Promise.all(
     whoifollowId.following.map(async (id) => {
       return await Tweet.find({ userid: id });
@@ -208,15 +213,24 @@ const getUsertwittandUserWhoifollow = asyncHandler(async (req, res) => {
     );
 });
 
-const getOnlyFollowerTwitt = asyncHandler(async (req,res)=>{
+const getOnlyFollowerTwitt = asyncHandler(async (req, res) => {
   const userId = req.user;
-  if(!userId) throw new ApiError(400, "please login")
+  if (!userId) throw new ApiError(400, "please login");
+
   const userDetail = await User.findById(userId).select("-password");
-  const getTwitt = await Promise.all(userDetail.following.map(async(id)=>{
-    return await Tweet.find({userid:id})
-  }))
-  return res.status(200).json(new ApiRasponce(200, "get all userWhoIfollow", getTwitt))
-})
+  const getTwitt = await Promise.all(
+    userDetail.following.map(async (id) => {
+      return await Tweet.find({ userid: id });
+    })
+  );
+
+  // Flatten the array of arrays into a single array of objects
+  const flattenedTwitt = getTwitt.flat();
+
+  return res
+    .status(200)
+    .json(new ApiRasponce(200, "get all userWhoIfollow", flattenedTwitt));
+});
 
 export {
   ragiser,
@@ -228,5 +242,5 @@ export {
   follow,
   unfollow,
   getUsertwittandUserWhoifollow,
-  getOnlyFollowerTwitt
+  getOnlyFollowerTwitt,
 };

@@ -6,6 +6,7 @@ export const UserSlice = createSlice({
     user: null,
     otheruser: null,
     profile: null,
+    
   },
   reducers: {
     user: (state, action) => {
@@ -17,8 +18,23 @@ export const UserSlice = createSlice({
     setprofile: (state, action) => {
       state.profile = action.payload;
     },
+    setRefreshFollowing: (state, action) => {
+      if (state.user.following.includes(action.payload)) {
+        state.user.following = state.user.following.filter(
+          (item) => item !== action.payload
+        );
+      } else {
+        state.user.following.push(action.payload);
+      }
+    },
+    setUserDataNull:(state)=>{
+      state.user=null;
+      state.profile=null;
+      state.otheruser=null;
+    }
   },
 });
 
-export const { user, otheruser,setprofile } = UserSlice.actions;
+export const { user, otheruser, setprofile, setRefreshFollowing,setUserDataNull } =
+  UserSlice.actions;
 export default UserSlice.reducer;

@@ -3,19 +3,19 @@ import { FaArrowLeft } from "react-icons/fa";
 import { CiCalendar } from "react-icons/ci";
 import { Link, useParams } from "react-router-dom";
 import useUserrGetProfile from "../hook/useUserGetProfile";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import axios from "axios";
+import { setRefreshFollowing } from "../redux/slice/userData/userData";
+import toast from "react-hot-toast";
 const Profile = () => {
+  const dispatch = useDispatch();
   const { id } = useParams();
-  const { profile } = useSelector((state) => state.user);
-  console.log(profile);
+  const { profile, user } = useSelector((state) => state.user);
+
   const dateString = profile?.createdAt;
   const date = new Date(dateString);
-
-  // Extract year and month from the date
   const year = date.getFullYear();
-  const month = date.getMonth() + 1; // Month is zero-based, so we add 1
-
-  // Convert month number to month name
+  const month = date.getMonth() + 1;
   const monthNames = [
     "January",
     "February",
@@ -30,11 +30,45 @@ const Profile = () => {
     "November",
     "December",
   ];
-  const monthName = monthNames[month - 1]; // Adjusting index
+  const monthName = monthNames[month - 1];
 
-  // Construct the desired string
-  const joinedString = `Joined ${monthName} ${year}`; // Output: Joined April 2024
-
+  const joinedString = `Joined ${monthName} ${year}`;
+  const handlFollowUnfollow = async () => {
+    if (user?.following.includes(id)) {
+      try {
+        const { data } = await axios.post(
+          `${import.meta.env.VITE_USER_API_REQ}/user/unfollow/${id}`,
+          {},
+          {
+            withCredentials: true,
+          }
+        );
+        console.log(data)
+        dispatch(setRefreshFollowing(id));
+        toast.success(data.message);
+        dispatch(setRefresh());
+      } catch (error) {
+        console.log(error)
+      }
+    } else {
+      try {
+        const { data } = await axios.post(
+          `${import.meta.env.VITE_USER_API_REQ}/user/follow/${id}`,
+          {},
+          {
+            withCredentials: true,
+          }
+        );
+        console.log(data)
+        dispatch(setRefreshFollowing(id));
+        toast.success(data.message);
+        dispatch(setRefresh());
+      } catch (error) {
+        console.log(error)
+        
+      }
+    }
+  };
   useUserrGetProfile(id);
   return (
     <div className="w-[60%] border-l-2 border-gray-300 border-r-2 ">
@@ -70,7 +104,16 @@ const Profile = () => {
       </div>
       <div className="w-full  flex justify-end pr-10 py-3">
         <div className="px-3 p-2 rounded-full hover:bg-gray-300 bg-gray-200 border-2 border-black">
-          <button className="font-bold ">Edit Profie</button>
+          {user?._id === id ? (
+            <button className="font-bold">Edit Profile</button>
+          ) : (
+            <button
+              onClick={handlFollowUnfollow}
+              className="font-bold border-none"
+            >
+              {user?.following.includes(id) ? "following" : "follow"}
+            </button>
+          )}
         </div>
       </div>
       <div className=" px-5 py-3">
@@ -92,7 +135,9 @@ const Profile = () => {
           <div className="flex gap-1 ">
             <div>
               <h1 className="font-bold ">
-                {profile?.followers?.length === 0 ? 0 : profile?.followers}
+                {profile?.followers?.length === 0
+                  ? 0
+                  : profile?.followers.length}
               </h1>
             </div>
             <div>
@@ -102,7 +147,9 @@ const Profile = () => {
           <div className="flex gap-1 ">
             <div>
               <h1 className="font-bold ">
-                {profile?.following?.length === 0 ? 0 : profile?.following}
+                {profile?.following?.length === 0
+                  ? 0
+                  : profile?.following.length}
               </h1>
             </div>
             <div>

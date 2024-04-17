@@ -10,15 +10,17 @@ import { RiLogoutCircleRLine } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
 import { hiddenShow } from "../../redux/slice/searchboxHiddenShow/searchbox";
 import { BsTwitterX, BsXCircleFill } from "react-icons/bs";
+import { useLogOut } from "../../hook/useLogOut";
 
 const Left = () => {
+  const Logout = useLogOut();
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const handleSeach = () => {
     dispatch(hiddenShow());
   };
   const logoutfun = () => {
-    window.location.href = "http://localhost:8000/logout";
+    Logout();
   };
   return (
     <div className="pt-1  w-[20%] hidden md:block lg:block  ">

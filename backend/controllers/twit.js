@@ -7,9 +7,6 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 const Twitt = asyncHandler(async (req, res) => {
   const { description } = req.body;
   const userid = req.user;
-  console.log(description);
-  console.log(userid);
-
   if (!description || !userid) throw new ApiError(400, "please field");
   const userDetail = await User.findById(userid);
   if (!userDetail) throw new ApiError(400, "user not found");

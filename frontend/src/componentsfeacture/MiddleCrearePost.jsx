@@ -7,7 +7,12 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { setRefresh } from "../../redux/slice/twitt/twitt";
+import { setIsActive } from "../../redux/slice/twitt/twitt";
+import { useSelector } from "react-redux";
+
 const MiddleCrearePost = () => {
+  const { isActive } = useSelector((state) => state.twitt);
+
   const dispatch = useDispatch();
   const emojiimage = useRef(null);
   const [emoji, setemoji] = useState(false);
@@ -50,14 +55,33 @@ const MiddleCrearePost = () => {
     }
   };
 
+  const followingHandle = () => {
+    ;
+    dispatch(setIsActive(false));
+  };
+  const forYouHandle = () => {
+    
+    dispatch(setIsActive(true));
+  };
+
   return (
     <div>
       <div className="container   ">
         <div className="headersecion  flex w-[100%] justify-evenly border-b-2 border-gray-300">
-          <div className="w-[50%] hover:bg-zinc-300 py-5">
-            <h1 className="text-xl font-bold text-center">For You</h1>
+          <div
+            onClick={forYouHandle}
+            className={`w-[50%] hover:bg-zinc-300 py-5 ${
+              isActive && "border-b-2 border-blue-500"
+            } `}
+          >
+            <h1 className="text-xl font-bold text-center ">For You</h1>
           </div>
-          <div className="w-[50%] hover:bg-zinc-300 py-5">
+          <div
+            onClick={followingHandle}
+            className={`w-[50%] hover:bg-zinc-300 py-5 ${
+              !isActive && "border-b-2 border-blue-500"
+            }`}
+          >
             <h1 className="text-xl font-bold text-center">Following</h1>
           </div>
         </div>
