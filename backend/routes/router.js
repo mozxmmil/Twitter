@@ -13,6 +13,8 @@ import {
 } from "../controllers/auth.js";
 import { Middlerware } from "../middleware/authentication.js";
 import { Twitt, likeTwitt, twittDelete } from "../controllers/twit.js";
+import googleAuth from "../controllers/google-auth.js";
+
 const router = exprss.Router();
 
 router.route("/ragister").post(ragiser);
@@ -26,8 +28,11 @@ router.route("/user/profile/:id").get(Middlerware, userProfiel);
 router.route("/user/all").get(Middlerware, getallUser);
 router.route("/user/follow/:id").post(Middlerware, follow);
 router.route("/user/unfollow/:id").post(Middlerware, unfollow);
-router.route("/user/getalltwitt").get(Middlerware, getUsertwittandUserWhoifollow);
-router.route("/user/getOnlyFollowerTwitt").get(Middlerware, getOnlyFollowerTwitt);
-
+router
+  .route("/user/getalltwitt")
+  .get(Middlerware, getUsertwittandUserWhoifollow);
+router
+  .route("/user/getOnlyFollowerTwitt")
+  .get(Middlerware, getOnlyFollowerTwitt);
 
 export default router;

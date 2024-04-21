@@ -10,6 +10,7 @@ import { useDeleteTwitt } from "../../hook/useDeleteTwitt";
 import { useSelector } from "react-redux";
 
 const MiddleTwwit = ({
+  profilePicture,
   likes,
   description,
   createdAt,
@@ -17,6 +18,9 @@ const MiddleTwwit = ({
   _id,
   userid,
 }) => {
+  console.log(userDetail)
+  const userProfile = userDetail?.find(profile => profile)
+  console.log(userProfile)
   const { user } = useSelector((state) => state.user);
   const TwittDelete = useDeleteTwitt();
   const time = useTwitterTimeUpdate(createdAt);
@@ -33,7 +37,7 @@ const MiddleTwwit = ({
         <div className="flex items-start gap-3  ">
           <div className="avtar">
             <Avatar
-              src="https://images.unsplash.com/photo-1711075781376-bc5107736730?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+              src={userProfile?.profilePicture}
               size="50"
               round={true}
             />
@@ -41,13 +45,10 @@ const MiddleTwwit = ({
           <div className="w-full">
             <div className="flex  items-center gap-3">
               <h1 className="text-[16px] font-bold capitalize leading-4 font ">
-                {userDetail && userDetail.length > 0 && (
-                  <div>{userDetail[0]?.name}</div>
-                )}
-                
+                {userProfile?.name.length > 8 ? userProfile.name.slice(0, 8) + "..." : userProfile?.name}
               </h1>
               <h1 className=" font-semibold text-gray-500  ">
-                {`${userDetail[0]?.username}. ${time}`}
+                {`${userProfile?.name.length > 8 ? userProfile.name.slice(0, 8) + "..." : userProfile?.name} . ${time}`}
               </h1>
             </div>
             <div className="twit py-2 w-full ">

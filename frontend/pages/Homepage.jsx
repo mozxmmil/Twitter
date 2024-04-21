@@ -11,11 +11,13 @@ import { useGetOtherUserProfile } from "../hook/useGetOtherUserProfile";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
- const Homepage = () => {
+const Homepage = () => {
   const navigate = useNavigate();
-  const { user } = useSelector((state) => state.user);
+
+  const { token } = useSelector((state) => state.auth);
+
   useEffect(() => {
-    if (!user) {
+    if (!token) {
       navigate("/login");
     }
   }, []);
@@ -31,4 +33,4 @@ import { useSelector } from "react-redux";
   );
 };
 
-export default Homepage
+export default Homepage;

@@ -1,8 +1,6 @@
 // passport-setup.js
 import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
-import { Types } from "mongoose";
-
 import { User } from "../models/usermodel.js";
 import dotenv from "dotenv";
 dotenv.config();
@@ -11,11 +9,9 @@ const googlestrategy = new GoogleStrategy(
   {
     clientID: process.env.Client_ID,
     clientSecret: process.env.Client_secret,
-    callbackURL: "/auth/google/callback",
+    callbackURL: "/api/v2/auth/google/callback",
   },
   async (accessToken, refreshToken, profile, done) => {
-    console.log(profile);
-
     try {
       // Check if user already exists in the database
       let existingUser = await User.findOne({ username: profile.displayName });

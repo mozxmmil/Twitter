@@ -7,37 +7,82 @@ import { passwordcompare, passwordhash } from "../utils/bcrypt.js";
 import { jwtTokenMaker } from "../utils/jwtToken.js";
 import { Tweet } from "../models/tweetmodel.js";
 const ragiser = asyncHandler(async (req, res) => {
-  const { name, username, email, password } = req.body;
+  const { name, username, email, password, googleAuth, profilePicture } =
+    req.body;
 
-  if (
-    !(
-      name &&
-      username &&
-      email &&
-      password &&
-      name.trim() &&
-      username.trim() &&
-      email.trim() &&
-      password.trim()
+  if (googleAuth) {
+    const googleLoginUserData = await User.findOne({ email });
+
+    // sign up processor
+    if (!googleLoginUserData) {
+      const user = await User.create({
+        name,
+        username,
+        email,
+        profilePicture,
+      });
+
+      const jwt = jwtTokenMaker(user._id);
+      if (!jwt) throw new ApiError(400, "Error creating token");
+      const cookiew = {
+        httpOnly: true,
+        maxAge: 1000 * 60 * 60 * 24 * 7,
+      };
+      res
+        .status(200)
+        .cookie("token", jwt, cookiew)
+        .json(new ApiRasponce(200, "User created successfully", user));
+    } else {
+      // login processor
+
+      const jwt1 = jwtTokenMaker(googleLoginUserData._id);
+      if (!jwt1) throw new ApiError(400, "Error creating token");
+      const cookiew = {
+        httpOnly: true,
+        maxAge: 1000 * 60 * 60 * 24 * 7,
+      };
+
+      res
+        .status(200)
+        .cookie("token", jwt1, cookiew)
+        .json(
+          new ApiRasponce(200, "User logged in successfully", {
+            token: jwt1,
+            user: googleLoginUserData,
+          })
+        );
+    }
+  } else {
+    if (
+      !(
+        name &&
+        username &&
+        email &&
+        password &&
+        name.trim() &&
+        username.trim() &&
+        email.trim() &&
+        password.trim()
+      )
     )
-  )
-    throw new ApiError(400, "Please provide all fields");
-  let user = await User.findOne({ $or: [{ email }, { username }] });
+      throw new ApiError(400, "Please provide all fields");
+    let user = await User.findOne({ $or: [{ email }, { username }] });
 
-  if (user) throw new ApiError(409, "User already exists");
+    if (user) throw new ApiError(409, "User already exists");
 
-  const hashedpassword = await passwordhash(password);
+    const hashedpassword = await passwordhash(password);
 
-  const newuser = await User.create({
-    name,
-    username,
-    email,
-    password: hashedpassword,
-  });
+    const newuser = await User.create({
+      name,
+      username,
+      email,
+      password: hashedpassword,
+    });
 
-  return res
-    .status(200)
-    .json(new ApiRasponce(200, "User created successfully", newuser));
+    return res
+      .status(200)
+      .json(new ApiRasponce(200, "User created successfully", newuser));
+  }
 });
 
 const login = asyncHandler(async (req, res) => {
@@ -75,9 +120,9 @@ const login = asyncHandler(async (req, res) => {
 const logout = asyncHandler(async (req, res) => {
   res
     .clearCookie("token", {
+      expires: new Date(0),
       httpOnly: true,
       secure: true,
-      expires: new Date(0),
     })
     .json(new ApiRasponce(200, "User logged out successfully"));
 });
@@ -195,7 +240,7 @@ const getUsertwittandUserWhoifollow = asyncHandler(async (req, res) => {
   const whoifollowId = await User.findById(userId).select("-password");
   // logeedin user who ifollow
   const userWhoIFollowTweet = await Promise.all(
-    whoifollowId.following.map(async (id) => {
+    whoifollowId?.following?.map(async (id) => {
       return await Tweet.find({ userid: id });
     })
   );

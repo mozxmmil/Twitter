@@ -6,8 +6,9 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { user, otheruser } from "../../redux/slice/userData/userData";
+import { setLogin } from "../../redux/slice/authenticaton";
 const FlowtingLogin = ({ loginflowting, setLoginflowting }) => {
-  const userDispatch = useDispatch();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loginsecctionshow, setLoginsecctionshow] = useState(true);
   const [name, setname] = useState("");
@@ -18,7 +19,7 @@ const FlowtingLogin = ({ loginflowting, setLoginflowting }) => {
     e.preventDefault();
     if (loginsecctionshow) {
       try {
-        const {data} = await axios.post(
+        const { data } = await axios.post(
           `${import.meta.env.VITE_USER_API_REQ}/login`,
           {
             email,
@@ -32,21 +33,21 @@ const FlowtingLogin = ({ loginflowting, setLoginflowting }) => {
           }
         );
         console.log(data)
+        console.log(data.data.token);
         if (data?.succsess) {
+          dispatch(setLogin(data?.data.token));
+          dispatch(user(data.data.user));
           toast.success(data.message);
           navigate("/");
-          
-          userDispatch(user(data.data.user));
-        }
-        else {
-          toast.error("Something Went Wrong");
+        } else {
+          toast.error("Login nhi hua");
         }
       } catch (error) {
-        toast.error("something went wrong")
+        toast.error("something went wrong");
       }
     } else {
       try {
-        const res = await axios.post(
+        const { data } = await axios.post(
           `${import.meta.env.VITE_USER_API_REQ}/ragister`,
           {
             name,
@@ -58,17 +59,13 @@ const FlowtingLogin = ({ loginflowting, setLoginflowting }) => {
             withCredentials: true,
           }
         );
-        console.log(res);
-        const { data } = res.data;
-        console.log(data);
-        if (res.data) {
+        if (data.succsess) {
           toast.success("please login");
-        }
-        else {
+        } else {
           toast("Something Went Wrong");
         }
       } catch (error) {
-        console.log(error.response.data);
+        console.error(error);
       }
     }
   };

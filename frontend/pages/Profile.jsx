@@ -11,7 +11,8 @@ const Profile = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
   const { profile, user } = useSelector((state) => state.user);
-
+ console.log(user)
+ console.log(profile)
   const dateString = profile?.createdAt;
   const date = new Date(dateString);
   const year = date.getFullYear();
@@ -43,12 +44,12 @@ const Profile = () => {
             withCredentials: true,
           }
         );
-        console.log(data)
+        console.log(data);
         dispatch(setRefreshFollowing(id));
         toast.success(data.message);
         dispatch(setRefresh());
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     } else {
       try {
@@ -59,13 +60,12 @@ const Profile = () => {
             withCredentials: true,
           }
         );
-        console.log(data)
+        console.log(data);
         dispatch(setRefreshFollowing(id));
         toast.success(data.message);
         dispatch(setRefresh());
       } catch (error) {
-        console.log(error)
-        
+        console.log(error);
       }
     }
   };
@@ -78,7 +78,7 @@ const Profile = () => {
         </Link>
         <div className="px-3">
           <div className="capitalize text-2xl font-bold leading-4">
-            {profile?.name}
+          {profile?.name.length  > 8 ? profile?.name.slice(0,8)+ "..." : profile?.name}
           </div>
           <div className="pt-2">3 post</div>
         </div>
@@ -96,7 +96,7 @@ const Profile = () => {
           <div className="absolute  justify-center hover:cursor-pointer bg-red-500 h-40 w-40 rounded-full -bottom-16 z-50 left-4 border-4 overflow-hidden">
             <img
               className="w-full h-full object-cover"
-              src="https://images.unsplash.com/photo-1711075781376-bc5107736730?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+              src={profile? profile.profilePicture : "https://images.unsplash.com/photo-1647828150413-1717ace5bac2?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
               alt=""
             />
           </div>
@@ -119,9 +119,9 @@ const Profile = () => {
       <div className=" px-5 py-3">
         <div>
           <h1 className="text-2xl font-bold capitalize leading-4 font ">
-            {profile?.name}
+            {profile?.name.length  >8 ? profile?.name.slice(0,8)+ "..." : profile?.name}
           </h1>
-          <h1 className="font-semibold text-gray-500 pt-1 ">{`@${profile?.username}`}</h1>
+          <h1 className="font-semibold text-gray-500 pt-1 ">{`@${profile?.name.length  >8 ? profile?.name.slice(0,8)+ "..." : profile?.name}`}</h1>
         </div>
         <div className="flex items-center gap-2 pt-2">
           <div>
