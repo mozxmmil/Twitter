@@ -13,18 +13,15 @@ import { useSelector } from "react-redux";
 
 const Homepage = () => {
   const { id } = useParams();
-  console.log(id)
   const navigate = useNavigate();
-
   const { token } = useSelector((state) => state.auth);
   const {user} = useSelector((state) => state.user);
- console.log(user._id)
   useEffect(() => {
     if (!token) {
       navigate("/login");
     }
   }, []);
-  useUserrGetProfile(id? id : user._id);
+  
   useGetOtherUserProfile();
   return (
     <div className="main-content flex  justify-between w-[95%] lg:w-[80%] mx-auto ">

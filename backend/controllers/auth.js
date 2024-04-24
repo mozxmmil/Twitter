@@ -7,6 +7,7 @@ import { passwordcompare, passwordhash } from "../utils/bcrypt.js";
 import { jwtTokenMaker } from "../utils/jwtToken.js";
 import { Tweet } from "../models/tweetmodel.js";
 import { cloudinaryUpload } from "../service/Cloudanary.js";
+import { Notification } from "../models/notification.js";
 
 const ragiser = asyncHandler(async (req, res) => {
   const { name, username, email, password, googleAuth, profilePicture } =
@@ -201,6 +202,11 @@ const follow = asyncHandler(async (req, res) => {
         followers: LoginuserId,
       },
     });
+    await Notification.create({
+      sender: LoginuserId,
+      reciver: userId,
+      type: "follow",
+    });
   } else {
     return res.status(200).json(new ApiRasponce(200, "already following"));
   }
@@ -238,7 +244,7 @@ const unfollow = asyncHandler(async (req, res) => {
 const getUsertwittandUserWhoifollow = asyncHandler(async (req, res) => {
   const userId = req.user;
   const userDetail = await Tweet.find({ userid: userId });
-  
+
   // logeedin user twiit
   const whoifollowId = await User.findById(userId).select("-password");
   // logeedin user who ifollow
@@ -299,7 +305,7 @@ const ProfileDataUpdate = asyncHandler(async (req, res) => {
 
   const profileUrl = await cloudinaryUpload(profileImage);
   const coverUrl = await cloudinaryUpload(coverImage);
-  
+
   // Check if images were successfully uploaded
   if (!profileUrl && !coverUrl) {
     return res
@@ -314,7 +320,7 @@ const ProfileDataUpdate = asyncHandler(async (req, res) => {
     newuser.profilePicture = profileUrl;
     newuser.coverImage = coverUrl;
     newuser.name = profileName || user.name;
-     await newuser.save();
+    await newuser.save();
   } else {
     console.error("User not found.");
     // Handle the case where no user is found with the specified criteria

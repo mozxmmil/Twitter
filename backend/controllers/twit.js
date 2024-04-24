@@ -1,3 +1,4 @@
+import { Notification } from "../models/notification.js";
 import { Tweet } from "../models/tweetmodel.js";
 import { User } from "../models/usermodel.js";
 import { ApiRasponce } from "../utils/apiResponce.js";
@@ -35,6 +36,7 @@ const twittDelete = asyncHandler(async (req, res) => {
 const likeTwitt = asyncHandler(async (req, res) => {
   const user = req.user;
   const { id } = req.params;
+
   const twitt = await Tweet.findById(id);
   if (twitt.likes.includes(user)) {
     await Tweet.findByIdAndUpdate(id, {
@@ -49,6 +51,14 @@ const likeTwitt = asyncHandler(async (req, res) => {
         likes: user,
       },
     });
+    
+
+    const notification = await new Notification({
+      sender: user,
+      reciver: twitt?.userid?.toString(),
+      type: "like",
+    });
+    await notification.save();
     return res.status(200).json(new ApiRasponce(200, "liked"));
   }
 });

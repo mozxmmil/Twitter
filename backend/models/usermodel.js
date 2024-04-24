@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { Tweet } from "./tweetmodel.js";
+
 const userschema = new mongoose.Schema(
   {
     googleId: { type: String },
@@ -21,9 +22,23 @@ const userschema = new mongoose.Schema(
   { timestamps: true }
 );
 userschema.pre("save", async function (next) {
-  
-  
-  
+  if (this.isModified("profilePicture")) {
+    try {
+      const twitt = await Tweet.find({ userid: this._id });
+      await Promise.all(
+        twitt.map(async (tw) => {
+          tw.userDetail = tw.userDetail.map((itme) => ({
+            ...itme,
+            profilePicture: this.profilePicture,
+          }));
+          await tw.save();
+        })
+      );
+    } catch (error) {
+      next(error);
+    }
+    next();
+  }
 });
 
 const User = mongoose.model("User", userschema);

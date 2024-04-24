@@ -15,6 +15,7 @@ import {
 import { Middlerware } from "../middleware/authentication.js";
 import { Twitt, likeTwitt, twittDelete } from "../controllers/twit.js";
 import { upload } from "../middleware/multer.js";
+import { DeleteNotification, GetNotification } from "../controllers/notification.js";
 
 const router = exprss.Router();
 
@@ -40,8 +41,10 @@ router
   .route("/userProfileDataUpdate")
   .post(
     Middlerware,
-    upload.fields([{ name: "profileImage" }, { name:"converImage" }]),
+    upload.fields([{ name: "profileImage" }, { name: "converImage" }]),
     ProfileDataUpdate
   );
+  router.route("/notification").get(Middlerware, GetNotification);
+  router.route("/DeleteNotification").delete(Middlerware,DeleteNotification)
 
 export default router;

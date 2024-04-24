@@ -47,10 +47,12 @@ const Left = () => {
           </Link>
         </div>
         <div className="text-2xl font-bold pt-2">
-          <div className="flex items-center gap-4 hover:bg-zinc-300 hover:cursor-pointer rounded-full py-2 px-3">
-            <IoNotificationsSharp className="text-3xl" />
-            <h1 className="xl:block md:hidden">Notification</h1>
-          </div>
+          <Link to={"/notification"}>
+            <div className="flex items-center gap-4 hover:bg-zinc-300 hover:cursor-pointer rounded-full py-2 px-3">
+              <IoNotificationsSharp className="text-3xl" />
+              <h1 className="xl:block md:hidden">Notification</h1>
+            </div>
+          </Link>
         </div>
         <div className="text-2xl font-bold pt-2">
           <div className="flex items-center gap-4 hover:bg-zinc-300 hover:cursor-pointer rounded-full py-2 px-3">

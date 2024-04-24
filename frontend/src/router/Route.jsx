@@ -1,5 +1,6 @@
-import React, { lazy,Suspense } from "react";
+import React, { lazy, Suspense } from "react";
 import { createBrowserRouter, Route, RouterProvider } from "react-router-dom";
+import Notification from "../../pages/Notification";
 
 const Homepage = lazy(() => import("../../pages/Homepage"));
 const Profile = lazy(() => import("../../pages/Profile"));
@@ -22,7 +23,7 @@ const Router = () => {
             <Suspense fallback={<div>Loading...</div>}>
               <Profile />
             </Suspense>
-          )
+          ),
         },
         {
           path: "/",
@@ -39,7 +40,14 @@ const Router = () => {
               <SearchPage />
             </Suspense>
           ),
-          
+        },
+        {
+          path: "/notification",
+          element: (
+            <Suspense fallback={<div>Loading...</div>}>
+              <Notification />
+            </Suspense>
+          ),
         },
       ],
     },

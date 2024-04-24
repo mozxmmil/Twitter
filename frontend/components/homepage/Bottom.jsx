@@ -15,10 +15,15 @@ const Bottom = () => {
         <Link to="/">
           <IoMdHome />
         </Link>
-
-        <FaSearch />
-        <IoNotificationsSharp />
-        <TiMessages />
+        <Link to={"/search"}>
+          <FaSearch />
+        </Link>
+        <Link to={"notification"}>
+          <IoNotificationsSharp />
+        </Link>
+        <Link to={""}>
+          <TiMessages />
+        </Link>
       </div>
     </div>
   );
