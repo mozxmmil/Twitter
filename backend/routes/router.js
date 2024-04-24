@@ -1,5 +1,6 @@
 import exprss from "express";
 import {
+  ProfileDataUpdate,
   bookmark,
   follow,
   getOnlyFollowerTwitt,
@@ -13,7 +14,7 @@ import {
 } from "../controllers/auth.js";
 import { Middlerware } from "../middleware/authentication.js";
 import { Twitt, likeTwitt, twittDelete } from "../controllers/twit.js";
-import googleAuth from "../controllers/google-auth.js";
+import { upload } from "../middleware/multer.js";
 
 const router = exprss.Router();
 
@@ -34,5 +35,13 @@ router
 router
   .route("/user/getOnlyFollowerTwitt")
   .get(Middlerware, getOnlyFollowerTwitt);
+
+router
+  .route("/userProfileDataUpdate")
+  .post(
+    Middlerware,
+    upload.fields([{ name: "profileImage" }, { name:"converImage" }]),
+    ProfileDataUpdate
+  );
 
 export default router;

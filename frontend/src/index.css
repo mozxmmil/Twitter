@@ -3,7 +3,10 @@
 @tailwind utilities;
 
 body {
-    overflow: hidden; /* Hide the main scroll bar */
+    overflow: hidden;
+    .scrollable-element::-webkit-scrollbar {
+      display: none;
+    } /* Hide the main scroll bar */
   }
   
   .main-content {

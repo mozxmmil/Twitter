@@ -11,6 +11,7 @@ export const UserSlice = createSlice({
     profile: null,
     googleLogin: false,
     googleauthData: null,
+    ProfileDataRefresh: false,
   },
   reducers: {
     user: (state, action) => {
@@ -44,6 +45,9 @@ export const UserSlice = createSlice({
     setgoogleauthData: (state, action) => {
       state.googleauthData = action.payload;
     },
+    setProfileDataRefresh: (state, action) => {
+      state.ProfileDataRefresh = !state.ProfileDataRefresh;
+    },
   },
 });
 
@@ -55,5 +59,6 @@ export const {
   setUserDataNull,
   setGoogleLogin,
   setgoogleauthData,
+  setProfileDataRefresh,
 } = UserSlice.actions;
 export default UserSlice.reducer;

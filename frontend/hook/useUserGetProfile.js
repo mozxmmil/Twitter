@@ -2,8 +2,10 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setprofile } from "../redux/slice/userData/userData";
+import { useSelector } from "react-redux";
 
 const useUserrGetProfile = (id) => {
+  const { ProfileDataRefresh } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   try {
     useEffect(() => {
@@ -17,7 +19,7 @@ const useUserrGetProfile = (id) => {
         dispatch(setprofile(data.data));
       };
       callingapi();
-    }, [id]);
+    }, [id, ProfileDataRefresh]);
   } catch (error) {
     console.log(error);
   }

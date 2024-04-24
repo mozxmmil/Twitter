@@ -12,7 +12,9 @@ import { useSelector } from "react-redux";
 
 const MiddleCrearePost = () => {
   const { isActive } = useSelector((state) => state.twitt);
-
+  const { profile,ProfileDataRefresh } = useSelector((state) => state.user);
+  console.log(ProfileDataRefresh)
+  console.log(profile?.profilePicture);
   const dispatch = useDispatch();
   const emojiimage = useRef(null);
   const [emoji, setemoji] = useState(false);
@@ -34,6 +36,8 @@ const MiddleCrearePost = () => {
   const hadleTwittCreate = async (e) => {
     e.preventDefault();
     try {
+    
+      
       await axios
         .post(
           `${import.meta.env.VITE_USER_API_REQ}/twitt`,
@@ -52,15 +56,14 @@ const MiddleCrearePost = () => {
     } catch (error) {
       console.log(error.response.data);
       toast.error("plase fill twitt");
+      
     }
   };
 
   const followingHandle = () => {
-    ;
     dispatch(setIsActive(false));
   };
   const forYouHandle = () => {
-    
     dispatch(setIsActive(true));
   };
 
@@ -92,7 +95,7 @@ const MiddleCrearePost = () => {
                 <Avatar
                   size="50"
                   className=""
-                  src="https://images.unsplash.com/photo-1711075781376-bc5107736730?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                  src={profile?.profilePicture}
                   round={true}
                 />
               </div>

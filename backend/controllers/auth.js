@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { isValidObjectId } from "mongoose";
 import { User } from "../models/usermodel.js";
 import { ApiRasponce } from "../utils/apiResponce.js";
 import { ApiError } from "../utils/apierror.js";
@@ -6,6 +6,8 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { passwordcompare, passwordhash } from "../utils/bcrypt.js";
 import { jwtTokenMaker } from "../utils/jwtToken.js";
 import { Tweet } from "../models/tweetmodel.js";
+import { cloudinaryUpload } from "../service/Cloudanary.js";
+
 const ragiser = asyncHandler(async (req, res) => {
   const { name, username, email, password, googleAuth, profilePicture } =
     req.body;
@@ -236,6 +238,7 @@ const unfollow = asyncHandler(async (req, res) => {
 const getUsertwittandUserWhoifollow = asyncHandler(async (req, res) => {
   const userId = req.user;
   const userDetail = await Tweet.find({ userid: userId });
+  
   // logeedin user twiit
   const whoifollowId = await User.findById(userId).select("-password");
   // logeedin user who ifollow
@@ -277,6 +280,48 @@ const getOnlyFollowerTwitt = asyncHandler(async (req, res) => {
     .json(new ApiRasponce(200, "get all userWhoIfollow", flattenedTwitt));
 });
 
+const ProfileDataUpdate = asyncHandler(async (req, res) => {
+  const user = req.user;
+  const { profileName } = req.body;
+  // Check if profile image and cover image are uploaded
+  const profileImage = req?.files?.profileImage?.[0]?.path;
+  const coverImage = req?.files?.converImage?.[0]?.path;
+
+  if (!profileImage && !coverImage) {
+    return res
+      .status(400)
+      .json(
+        new ApiRasponce(400, "Please upload both profile and cover images")
+      );
+  }
+
+  // Upload images to Cloudinary
+
+  const profileUrl = await cloudinaryUpload(profileImage);
+  const coverUrl = await cloudinaryUpload(coverImage);
+  
+  // Check if images were successfully uploaded
+  if (!profileUrl && !coverUrl) {
+    return res
+      .status(400)
+      .json(new ApiRasponce(400, "Failed to upload images to Cloudinary"));
+  }
+
+  // Update user profile data
+  const newuser = await User.findById(user);
+
+  if (newuser) {
+    newuser.profilePicture = profileUrl;
+    newuser.coverImage = coverUrl;
+    newuser.name = profileName || user.name;
+     await newuser.save();
+  } else {
+    console.error("User not found.");
+    // Handle the case where no user is found with the specified criteria
+  }
+  res.status(200).json(new ApiRasponce(200, "Profile data updated"));
+});
+
 export {
   ragiser,
   login,
@@ -288,4 +333,5 @@ export {
   unfollow,
   getUsertwittandUserWhoifollow,
   getOnlyFollowerTwitt,
+  ProfileDataUpdate,
 };

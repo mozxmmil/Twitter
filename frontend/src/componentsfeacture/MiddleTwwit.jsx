@@ -18,9 +18,7 @@ const MiddleTwwit = ({
   _id,
   userid,
 }) => {
-  console.log(userDetail)
   const userProfile = userDetail?.find(profile => profile)
-  console.log(userProfile)
   const { user } = useSelector((state) => state.user);
   const TwittDelete = useDeleteTwitt();
   const time = useTwitterTimeUpdate(createdAt);

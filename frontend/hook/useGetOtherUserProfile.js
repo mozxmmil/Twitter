@@ -2,10 +2,10 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { otheruser } from "../redux/slice/userData/userData";
-
+import { useSelector } from "react-redux";
 
 export const useGetOtherUserProfile = () => {
-    
+  const {ProfileDataRefresh} = useSelector((state) => state.user);
     const dispatch = useDispatch();
   useEffect(() => {
     const getuser = async () => {
@@ -18,5 +18,5 @@ export const useGetOtherUserProfile = () => {
       dispatch(otheruser(data.data));
     };
     getuser();
-  }, []);
+  }, [ProfileDataRefresh]);
 };

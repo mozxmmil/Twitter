@@ -8,10 +8,9 @@ import { Link } from "react-router-dom";
 const Right = () => {
   const searchHideen = useSelector((state) => state.seachHiddenShow);
   const { otheruser } = useSelector((state) => state.user);
-  
   return (
-    <div className=" lg:w-[30%] hidden md:block lg:block  ">
-      <div className="pt-3 px-4">
+    <div className=" lg:w-[30%] hidden md:block lg:block sicky  ">
+      <div className="pt-3 px-4 ">
         <div
           className={`${
             searchHideen ? "hidden" : "block"
@@ -42,23 +41,26 @@ const Right = () => {
                     <Avatar
                       size="50"
                       className=""
-                      src="https://images.unsplash.com/photo-1711075781376-bc5107736730?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                      src={item?.profilePicture}
                       round={true}
                     />
                     <div className="">
                       <div>
                         <h1 className="text-[16px] font-bold capitalize leading-4 font ">
-                          {item?.name}
+                          {item?.name.lenght > 8 ? item?.name.slice(0,8)+"..." : item?.name}
                         </h1>
                       </div>
                       <div>
-                        <h1 className="font-semibold text-gray-500  ">{
-                          item?.username
-                        }</h1>
+                        <h1 className="font-semibold text-gray-500  ">
+                          {item?.name.lenght > 8 ? item?.name.slice(0,8)+"..." : item?.name}
+                        </h1>
                       </div>
                     </div>
                   </div>
-                  <Link to={`/profile/${item._id}`} className="w-full lg:w-auto ">
+                  <Link
+                    to={`/profile/${item._id}`}
+                    className="w-full lg:w-auto "
+                  >
                     <button className="bg-blue-300 hover:bg-blue-400 px-3 py-2 rounded-full w-full lg:w-auto">
                       Profile
                     </button>

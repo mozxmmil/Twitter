@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { CiCalendar } from "react-icons/ci";
 import { Link, useParams } from "react-router-dom";
@@ -7,12 +7,13 @@ import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { setRefreshFollowing } from "../redux/slice/userData/userData";
 import toast from "react-hot-toast";
+import ProfileImage from "../src/componentsfeacture/ProfileImage";
 const Profile = () => {
+  const [ProfileImageUploadSecction, setProfileImageUploadSecction] =
+    useState(false);
   const dispatch = useDispatch();
   const { id } = useParams();
   const { profile, user } = useSelector((state) => state.user);
- console.log(user)
- console.log(profile)
   const dateString = profile?.createdAt;
   const date = new Date(dateString);
   const year = date.getFullYear();
@@ -78,7 +79,9 @@ const Profile = () => {
         </Link>
         <div className="px-3">
           <div className="capitalize text-2xl font-bold leading-4">
-          {profile?.name.length  > 8 ? profile?.name.slice(0,8)+ "..." : profile?.name}
+            {profile?.name.length > 8
+              ? profile?.name.slice(0, 8) + "..."
+              : profile?.name}
           </div>
           <div className="pt-2">3 post</div>
         </div>
@@ -88,7 +91,11 @@ const Profile = () => {
           <div className="overflow-hidden w-full h-full">
             <img
               className="w-full h-full object-cover"
-              src="https://images.unsplash.com/photo-1647828150413-1717ace5bac2?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+              src={
+                profile?.coverImage
+                  ? profile.coverImage
+                  : "https://images.unsplash.com/photo-1596727147705-61a532a659bd?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+              }
               alt=""
             />
           </div>
@@ -96,7 +103,11 @@ const Profile = () => {
           <div className="absolute  justify-center hover:cursor-pointer bg-red-500 h-40 w-40 rounded-full -bottom-16 z-50 left-4 border-4 overflow-hidden">
             <img
               className="w-full h-full object-cover"
-              src={profile? profile.profilePicture : "https://images.unsplash.com/photo-1647828150413-1717ace5bac2?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
+              src={
+                profile?.profilePicture
+                  ? profile.profilePicture
+                  : "https://images.unsplash.com/photo-1596727147705-61a532a659bd?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+              }
               alt=""
             />
           </div>
@@ -105,7 +116,12 @@ const Profile = () => {
       <div className="w-full  flex justify-end pr-10 py-3">
         <div className="px-3 p-2 rounded-full hover:bg-gray-300 bg-gray-200 border-2 border-black">
           {user?._id === id ? (
-            <button className="font-bold">Edit Profile</button>
+            <button
+              onClick={() => setProfileImageUploadSecction(true)}
+              className="font-bold"
+            >
+              Edit Profile
+            </button>
           ) : (
             <button
               onClick={handlFollowUnfollow}
@@ -115,13 +131,30 @@ const Profile = () => {
             </button>
           )}
         </div>
+        <div
+          className={`${
+            ProfileImageUploadSecction ? "block" : "hidden"
+          } absolute  bg-[#00000059] z-[9999] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-md w-full h-full flex justify-center items-center `}
+        >
+          <div className="bg-zinc-800 h-[40%] w-[30%] rounded-md overflow-hidden">
+            <ProfileImage
+              setProfileImageUploadSecction={setProfileImageUploadSecction}
+            />
+          </div>
+        </div>
       </div>
       <div className=" px-5 py-3">
         <div>
           <h1 className="text-2xl font-bold capitalize leading-4 font ">
-            {profile?.name.length  >8 ? profile?.name.slice(0,8)+ "..." : profile?.name}
+            {profile?.name.length > 8
+              ? profile?.name.slice(0, 8) + "..."
+              : profile?.name}
           </h1>
-          <h1 className="font-semibold text-gray-500 pt-1 ">{`@${profile?.name.length  >8 ? profile?.name.slice(0,8)+ "..." : profile?.name}`}</h1>
+          <h1 className="font-semibold text-gray-500 pt-1 ">{`@${
+            profile?.name.length > 8
+              ? profile?.name.slice(0, 8) + "..."
+              : profile?.name
+          }`}</h1>
         </div>
         <div className="flex items-center gap-2 pt-2">
           <div>

@@ -3,10 +3,12 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setTwitt } from "../redux/slice/twitt/twitt";
 import { useSelector } from "react-redux";
+import { setProfileDataRefresh } from "../redux/slice/userData/userData";
 
 export const useGetTwitt = () => {
   const { refresh } = useSelector((state) => state.twitt);
   const { isActive } = useSelector((state) => state.twitt);
+  const {ProfileDataRefresh} = useSelector((state) => state.user);
   const dispatch = useDispatch();
   try {
     const callingapi = async () => {
@@ -39,7 +41,7 @@ export const useGetTwitt = () => {
       } else {
         FollowingTwitt();
       }
-    }, [refresh, isActive]);
+    }, [refresh, isActive,ProfileDataRefresh]);
   } catch (error) {
     console.log(error);
   }
